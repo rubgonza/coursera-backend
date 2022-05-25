@@ -9,3 +9,5 @@ mongodb/data/WiredTiger
 mongodb/data/WiredTiger.lock
 mongodb/data/WiredTiger.turtle
 *.wt
+*.2022-05-25T13-23-40Z-00000
+*.0000000002
