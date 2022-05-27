@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const leaderRouter = express.Router();
 const Leaders = require("../models/leaders");
 
+var authenticate = require("../authenticate");
+
 leaderRouter.use(bodyParser.json());
 
 leaderRouter
