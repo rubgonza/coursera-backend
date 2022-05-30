@@ -33,6 +33,18 @@ connect.then(
 
 var app = express();
 
+// Secure traffic only
+app.all("*", (req, res, next) => {
+  if (req.secure) {
+    return next();
+  } else {
+    res.redirect(
+      307,
+      "https://" + req.hostname + ":" + app.get("secPort") + req.url
+    );
+  }
+});
+
 app.use(cookieParser("12345-67890-09876-54321"));
 
 app.use(passport.initialize());
@@ -78,18 +90,6 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render("error");
-});
-
-// Secure traffic only
-app.all("*", (req, res, next) => {
-  if (req.secure) {
-    return next();
-  } else {
-    res.redirect(
-      307,
-      "https://" + req.hostname + ":" + app.get("secPort") + req.url
-    );
-  }
 });
 
 module.exports = app;
