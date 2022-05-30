@@ -4,7 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
-var config = require('./config');
+var config = require("./config");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/usersRouter");
@@ -21,8 +21,6 @@ const mongoose = require("mongoose");
 
 const url = config.mongoUrl;
 const connect = mongoose.connect(url);
-
-
 
 connect.then(
   (db) => {
@@ -80,6 +78,18 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render("error");
+});
+
+// Secure traffic only
+app.all("*", (req, res, next) => {
+  if (req.secure) {
+    return next();
+  } else {
+    res.redirect(
+      307,
+      "https://" + req.hostname + ":" + app.get("secPort") + req.url
+    );
+  }
 });
 
 module.exports = app;
